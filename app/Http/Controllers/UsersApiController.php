@@ -45,7 +45,7 @@ class UsersApiController extends Controller
             'last_name' => 'required',
             'date_of_birth' => 'required',
             'national_id' => 'required',
-            'email' => 'required | email',
+            'email' => 'required | email|unique:users',
             'password' => 'required',
             'c_password' => 'required | same:password',
         ]);
@@ -90,7 +90,7 @@ class UsersApiController extends Controller
         }
         $user->sendApiEmailVerificationNotification();
         $success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
-        return response()->json(['success' => $success], $this->successStatus);
+        return response()->json([$success], $this->successStatus);
 
     }
 
