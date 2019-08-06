@@ -108,8 +108,9 @@ class UsersApiController extends Controller
             $user->roles()->attach(Role::where('title', 'User')->first());
         }
         $user->sendApiEmailVerificationNotification();
-        $success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
-        return response()->json([$success], $this->successStatus);
+        return response()->json([
+            'message'=>'Please confirm yourself by clicking on verify user button sent to you on your email',
+        ], $this->successStatus);
 
     }
 
