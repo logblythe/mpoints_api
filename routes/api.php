@@ -26,6 +26,8 @@ Route::post('login', 'UsersApiController@login');
 
 Route::post('register', 'UsersApiController@register');
 
+Route::post('register/email', 'UsersApiController@uniqueEmail');
+
 Route::group(['middleware' => ['auth:api', 'check_role']], function () {
 
     Route::get('details', 'UsersApiController@details')->middleware('verified');

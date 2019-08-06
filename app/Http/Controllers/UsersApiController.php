@@ -24,7 +24,7 @@ class UsersApiController extends Controller
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
             if ($user->email_verified_at !== NULL) {
-                $success['message'] = "Login successfull";
+                $success['message'] = "Login success";
                 $success['data'] = $user;
 //                $success['token'] = $user->createToken('nfce_client')->accessToken;
                 $success['token'] = $user->createToken('MyApp')->accessToken;
@@ -33,9 +33,26 @@ class UsersApiController extends Controller
                 return response()->json(['error' => 'Please Verify Email'], 401);
             }
         } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+            return response()->json([
+                'message' => "Login Failure",
+                'error' => 'Invalid Credentials'], 401);
         }
 
+    }
+
+    public function uniqueEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Invalid email',
+                'error' => $validator->errors()->all()], 401);
+        }
+        return response()->json([
+            'message' => 'Valid email',
+        ]);
     }
 
     public function register(Request $request)
@@ -51,7 +68,9 @@ class UsersApiController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+            return response()->json([
+                'message' => 'Registration fail',
+                'error' => $validator->errors()->all()], 401);
         }
 
         $input = $request->all();
@@ -106,6 +125,7 @@ class UsersApiController extends Controller
         return response()->json(['success' => $user], $this->successStatus);
 
     }
+
 
     public function setImage(Request $request)
     {

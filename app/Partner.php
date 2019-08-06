@@ -21,6 +21,9 @@ class Partner extends Model
         'category_id'
     ];
 
+    protected $hidden = [
+        'id', 'created_at', 'updated_at',
+    ];
 
     public function category()
     {
@@ -35,6 +38,6 @@ class Partner extends Model
 
     public function rewards()
     {
-        return $this->hasMany('App\Reward','partner_id','custom_id');
+        return $this->hasMany('App\Reward', 'partner_id', 'custom_id');
     }
 }

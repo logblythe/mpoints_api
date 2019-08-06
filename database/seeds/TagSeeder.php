@@ -13,7 +13,7 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        Tag::truncate();
+//        Tag::truncate();
         $faker = Factory::create();
         for ($i = 0; $i <10 ; $i++) {
             Tag::create([

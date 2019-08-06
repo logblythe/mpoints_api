@@ -13,7 +13,7 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        Category::truncate();
+//        Category::truncate();
         $faker = Factory::create();
 
         for ($i = 0; $i < 10; $i++) {
