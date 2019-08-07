@@ -137,6 +137,12 @@ class UsersApiController extends Controller
     {
 
         $user = User::where('email', $request['email'])->first();
+        if (!$user) {
+            return response()->json([
+                'message' => 'Password reset failure',
+                'error' => 'No user found'
+            ]);
+        }
         $newPassword = $this->generate_string($this->permitted_chars, 20);
         $user->password = bcrypt($newPassword);
         try {
