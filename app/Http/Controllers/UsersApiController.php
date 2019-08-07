@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordResetEmail;
 use App\Role;
+use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Auth\Events\Verified;
@@ -18,6 +21,9 @@ class UsersApiController extends Controller
 
     public $successStatus = 200;
     public $customId;
+
+    public $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 
     public function login()
     {
@@ -42,6 +48,7 @@ class UsersApiController extends Controller
 
     public function uniqueEmail(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users'
         ]);
@@ -108,9 +115,8 @@ class UsersApiController extends Controller
             $user->roles()->attach(Role::where('title', 'User')->first());
         }
         $user->sendApiEmailVerificationNotification();
-        return response()->json([
-            'message'=>'Please confirm yourself by clicking on verify user button sent to you on your email',
-        ], $this->successStatus);
+        $success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
+        return response()->json([$success], $this->successStatus);
 
     }
 
@@ -125,6 +131,39 @@ class UsersApiController extends Controller
         $user = Auth::user();
         return response()->json(['success' => $user], $this->successStatus);
 
+    }
+
+    public function resetPassword(Request $request)
+    {
+
+        $user = User::where('email', $request['email'])->first();
+        $newPassword = $this->generate_string($this->permitted_chars, 20);
+        $user->password = bcrypt($newPassword);
+        try {
+            Mail::to($user->email)->send(new PasswordResetEmail($user, $newPassword));
+            $user->save();
+            return response()->json([
+                'message' => 'Password reset success. Please check your email',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Password reset failure',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+
+    function generate_string($input, $strength = 16)
+    {
+        $input_length = strlen($input);
+        $random_string = '';
+        for ($i = 0; $i < $strength; $i++) {
+            $random_character = $input[mt_rand(0, $input_length - 1)];
+            $random_string .= $random_character;
+        }
+
+        return $random_string;
     }
 
 

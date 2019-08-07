@@ -21,12 +21,13 @@ Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verif
 
 Route::get('email/resend', 'VerificationApiController@resend')->name('verificationapi.resend');
 
-
 Route::post('login', 'UsersApiController@login');
 
 Route::post('register', 'UsersApiController@register');
 
 Route::post('register/email', 'UsersApiController@uniqueEmail');
+
+Route::post('password/reset', 'UsersApiController@resetPassword');
 
 Route::group(['middleware' => ['auth:api', 'check_role']], function () {
 
