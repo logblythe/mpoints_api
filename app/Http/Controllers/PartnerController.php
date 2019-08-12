@@ -6,6 +6,7 @@ use App\Category;
 use App\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use phpseclib\Crypt\Random;
 
 class PartnerController extends Controller
 {
@@ -18,12 +19,13 @@ class PartnerController extends Controller
 
     public function index()
     {
-//        $partners = Partner::orderBy('id', 'desc')->paginate(5);
         $desiredSize = Input::get('size');
         if ($desiredSize) {
             $partners = Partner::take($desiredSize)->get();
         } else {
-            $partners = Partner::all();
+//            $partners = Partner::all();
+            $partners = Partner::orderBy('id', 'desc')->paginate(5);
+
         }
         return response()->json([
             'status' => 'success',
@@ -41,7 +43,20 @@ class PartnerController extends Controller
 
     public function store(Request $request)
     {
-        $partner = Partner::create($request->all());
+        $partner = Partner::create([
+            'custom_id' => substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5),
+            'business_name' => $request['business_name'],
+            'description_html' => $request['description_html'],
+            'image' => $request['image'],
+            'phone' => $request['phone'],
+            'email' => $request['email'],
+            'website' => $request['website'],
+            'facebook' => $request['facebook'],
+            'mp_rate' => $request['mp_rate'],
+            'sp_rate' => $request['sp_rate'],
+            'active_inactive' => false,
+            "category_id" => 1
+        ]);
         return response()->json([
             'status' => 'success',
             'data' => $partner

@@ -35,6 +35,10 @@ Route::group(['middleware' => ['auth:api', 'check_role']], function () {
 
     Route::post('setImage', 'UsersApiController@setImage');
 
+    Route::get('ads', ['uses' => 'AdController@index',
+        'roles' => ['Admin', 'Seller', 'User']
+    ]);
+
     Route::prefix('partners')->group(function () {
         Route::get('/', [
             'uses' => 'PartnerController@index',

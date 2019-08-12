@@ -20,4 +20,11 @@ class Reward extends Model
     {
         return $this->belongsToMany('App\Tag');
     }
+
+    public function partner()
+    {
+        return $this->belongsTo('App\Partner','partner_id','custom_id');
+    }
+
+
 }

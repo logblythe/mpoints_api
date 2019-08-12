@@ -18,10 +18,8 @@ use Illuminate\Auth\Events\Verified;
 class UsersApiController extends Controller
 {
     use VerifiesEmails;
-
     public $successStatus = 200;
     public $customId;
-
     public $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 
@@ -43,12 +41,10 @@ class UsersApiController extends Controller
                 'message' => "Login Failure",
                 'error' => 'Invalid Credentials'], 401);
         }
-
     }
 
     public function uniqueEmail(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users'
         ]);
@@ -120,12 +116,6 @@ class UsersApiController extends Controller
 
     }
 
-    /**
-     * details api
-     *
-     * @return \Illuminate\Http\Response
-     */
-
     public function details()
     {
         $user = Auth::user();
@@ -135,7 +125,6 @@ class UsersApiController extends Controller
 
     public function resetPassword(Request $request)
     {
-
         $user = User::where('email', $request['email'])->first();
         if (!$user) {
             return response()->json([
@@ -168,7 +157,6 @@ class UsersApiController extends Controller
             $random_character = $input[mt_rand(0, $input_length - 1)];
             $random_string .= $random_character;
         }
-
         return $random_string;
     }
 

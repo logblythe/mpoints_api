@@ -50,12 +50,12 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof ModelNotFoundException) {
             return response()->json([
-                'message' => 'Model not found'
+                'error' => 'Model not found'
             ], 404);
         }
         if ($exception instanceof AuthenticationException) {
             return response()->json([
-                'message' => 'Invalid token'
+                'error' => 'Invalid token'
             ], 401);
         }
         return parent::render($request, $exception);
