@@ -113,13 +113,13 @@ class UsersApiController extends Controller
         $user->sendApiEmailVerificationNotification();
         $success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
         return response()->json([$success], $this->successStatus);
-
     }
 
     public function details()
     {
         $user = Auth::user();
-        return response()->json(['success' => $user], $this->successStatus);
+        return response()->json(['message' => 'User fetch success',
+            'data' => $user], $this->successStatus);
 
     }
 

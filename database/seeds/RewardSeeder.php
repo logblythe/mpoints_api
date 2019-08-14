@@ -20,6 +20,7 @@ class RewardSeeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $partner = Partner::where('id', $i)->first();
             $reward = Reward::create([
+                'custom_id' => $faker->unique()->randomNumber(6), //todo
                 'partner_id' => $partner->custom_id,
                 'reward_name' => $faker->name,
                 'details_html' => $faker->randomHtml(),

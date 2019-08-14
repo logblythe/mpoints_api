@@ -38,7 +38,7 @@ class CheckRole
 //            return $next($request);
 //        }
         return response()->json([
-            'error' => 'unauthorized',
+            'error' => 'Invalid role',
         ],
             404
         );

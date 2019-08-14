@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Reward extends Model
 {
 
+
     protected $hidden = [
-        'id','created_at', 'updated_at',
+        'id', 'created_at', 'updated_at',
     ];
 
     public function category()
@@ -23,7 +24,7 @@ class Reward extends Model
 
     public function partner()
     {
-        return $this->belongsTo('App\Partner','partner_id','custom_id');
+        return $this->belongsTo('App\Partner', 'partner_id', 'custom_id');
     }
 
 

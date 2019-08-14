@@ -12,16 +12,12 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verificationapi.verify');
 
 Route::get('email/resend', 'VerificationApiController@resend')->name('verificationapi.resend');
 
-Route::post('login', 'UsersApiController@login');
+Route::post('login', ['as' => 'login',
+    'uses' => 'UsersApiController@login']);
 
 Route::post('register', 'UsersApiController@register');
 
@@ -31,7 +27,8 @@ Route::post('password/reset', 'UsersApiController@resetPassword');
 
 Route::group(['middleware' => ['auth:api', 'check_role']], function () {
 
-    Route::get('details', 'UsersApiController@details')->middleware('verified');
+    Route::get('details', ['uses' => 'UsersApiController@details',
+        'roles' => ['Admin', 'Seller', 'User']]);
 
     Route::post('setImage', 'UsersApiController@setImage');
 
@@ -116,7 +113,7 @@ Route::group(['middleware' => ['auth:api', 'check_role']], function () {
         ]);
         Route::post('/', [
             'uses' => 'StatementController@store',
-            'roles' => ['Admin', 'Seller']
+            'roles' => ['Admin', 'Seller', 'User']
         ]);
         Route::put('/{statement}', [
             'uses' => 'StatementController@update',

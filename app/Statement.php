@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Statement extends Model
 {
     protected $fillable = [
+        'user_id',
+        'partner_id',
+        'seller_id',
+        'employee_id',
+        'transaction_type',
         'purchase_amount',
         'count_of_items',
         'mp_amount',
-        'sp_amount'
+        'sp_amount',
+        'reward_id'
     ];
 
     public function user()
@@ -41,6 +47,6 @@ class Statement extends Model
 
     public function reward()
     {
-        return $this->belongsTo('App\Reward', 'reward_id', 'id');
+        return $this->belongsTo('App\Reward', 'reward_id', 'custom_id');
     }
 }

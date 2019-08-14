@@ -15,16 +15,16 @@ class CreateStatementsTable extends Migration
     {
         Schema::create('statements', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id');
-            $table->integer('partner_id');
-            $table->integer('seller_id');
-            $table->integer('employee_id');
+            $table->string('user_id');
+            $table->string('partner_id');
+            $table->string('seller_id')->nullable();
+            $table->string('employee_id')->nullable();
             $table->integer('transaction_type');
-            $table->integer('purchase_amount');
-            $table->integer('count_of_items');
-            $table->integer('mp_amount');
-            $table->integer('sp_amount');
-            $table->integer('reward_id');
+            $table->integer('purchase_amount')->nullable();
+            $table->integer('count_of_items')->nullable();
+            $table->integer('mp_amount')->nullable();
+            $table->integer('sp_amount')->nullable();
+            $table->string('reward_id');
             $table->timestamps();
         });
     }

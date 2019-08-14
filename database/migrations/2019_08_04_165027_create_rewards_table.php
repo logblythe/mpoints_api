@@ -15,6 +15,7 @@ class CreateRewardsTable extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('custom_id', 6)->unique();
             $table->string('partner_id');
             $table->string('reward_name');
             $table->text('details_html');

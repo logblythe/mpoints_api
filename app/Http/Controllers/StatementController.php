@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Partner;
 use App\Statement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 class StatementController extends Controller
@@ -19,24 +20,27 @@ class StatementController extends Controller
             $transactions = Statement::all();
         }
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $transactions
         ], 200);
     }
 
-    public function show(Statement $transaction)
+    public function show(Statement $statement)
     {
         return response()->json([
-            'status' => 'success',
-            'data' => $transaction
+            'message' => 'success',
+            'data' => $statement
         ], 200);
     }
 
     public function store(Request $request)
     {
-        $transaction = Statement::create($request->all());
+        $statement = Statement::create($request->all());
+        $user = Auth::user();
+        $user->mp_amount = $user->mp_amount - $request['mp_amount'];
+        $user->save();
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $statement
         ], 201);
     }
@@ -45,7 +49,7 @@ class StatementController extends Controller
     {
         $statement->update($request->all());
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $statement
         ], 200);
     }
@@ -54,7 +58,7 @@ class StatementController extends Controller
     {
         $statement->delete();
         return response()->json([
-            'status' => "Success",
+            'message' => "Success",
             'message' => 'delete success'
         ], 204);
     }
@@ -64,7 +68,7 @@ class StatementController extends Controller
 //        $id = $statement->partner_id;
 //        $partner = Partner::where('custom_id', $id)->first();
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $statement->partner
         ], 200);
     }
@@ -72,7 +76,7 @@ class StatementController extends Controller
     public function reward(Statement $statement)
     {
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $statement->reward
         ], 200);
     }
@@ -80,7 +84,7 @@ class StatementController extends Controller
     public function transactionType(Statement $statement)
     {
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $statement->transactionType
         ], 200);
     }

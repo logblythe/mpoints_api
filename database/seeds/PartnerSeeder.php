@@ -12,7 +12,7 @@ class PartnerSeeder extends Seeder
     {
         $faker = Factory::create();
         Partner::truncate();
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $partner = Partner::create([
                 'custom_id' => $faker->unique()->randomNumber(6), //todo
                 'business_name' => $faker->name,

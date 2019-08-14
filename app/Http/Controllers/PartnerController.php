@@ -20,15 +20,14 @@ class PartnerController extends Controller
     public function index()
     {
         $desiredSize = Input::get('size');
-        if ($desiredSize) {
-            $partners = Partner::take($desiredSize)->get();
+        if (!$desiredSize) {
+            $partners = Partner::orderBy('id', 'desc')->paginate(5);
         } else {
 //            $partners = Partner::all();
-            $partners = Partner::orderBy('id', 'desc')->paginate(5);
-
+            $partners = Partner::take($desiredSize)->get();
         }
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $partners
         ], 200);
     }
@@ -36,7 +35,7 @@ class PartnerController extends Controller
     public function show(Partner $partner)
     {
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $partner
         ], 200);
     }
@@ -58,7 +57,7 @@ class PartnerController extends Controller
             "category_id" => 1
         ]);
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $partner
         ], 201);
     }
@@ -67,7 +66,7 @@ class PartnerController extends Controller
     {
         $partner->update($request->all());
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $partner
         ], 200);
     }
@@ -76,7 +75,7 @@ class PartnerController extends Controller
     {
         $partner->delete();
         return response()->json([
-            'status' => "Success",
+            'message' => "Success",
             'message' => 'delete success'
         ], 204);
     }
@@ -85,7 +84,7 @@ class PartnerController extends Controller
     {
         $category = $partner->category;
         return response()->json([
-            'status' => 'Success',
+            'message' => 'Success',
             'data' => $category
         ]);
     }
@@ -93,7 +92,7 @@ class PartnerController extends Controller
     public function tags(Partner $partner)
     {
         return response()->json([
-            'status' => 'Success',
+            'message' => 'Success',
             'data' => $partner->tags
         ]);
     }
@@ -101,7 +100,7 @@ class PartnerController extends Controller
     public function rewards(Partner $partner)
     {
         return response()->json([
-            'status' => 'Success',
+            'message' => 'Success',
             'data' => $partner->rewards
         ]);
     }

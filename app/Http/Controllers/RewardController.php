@@ -18,16 +18,15 @@ class RewardController extends Controller
     public function index()
     {
         $desiredSize = Input::get('size');
-//        $rewards = Reward::orderBy('id', 'desc')->paginate($desiredSize);
-        $rewards = Reward::all();
-        if ($desiredSize) {
-            return response()->json([
-                'status' => 'success',
-                'data' => $rewards->take($desiredSize)
-            ], 200);
+        if (!$desiredSize) {
+            $rewards = Reward::orderBy('id', 'desc')->paginate(6);
+        } else {
+            $rewards = Reward::with('partner')->take($desiredSize)->get();
         }
+
+
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $rewards
         ], 200);
     }
@@ -35,7 +34,7 @@ class RewardController extends Controller
     public function show(Reward $reward)
     {
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $reward
         ], 200);
     }
@@ -44,7 +43,7 @@ class RewardController extends Controller
     {
         $reward = Reward::create($request->all());
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $reward
         ], 201);
     }
@@ -53,7 +52,7 @@ class RewardController extends Controller
     {
         $reward->update($request->all());
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $reward
         ], 200);
     }
@@ -62,14 +61,14 @@ class RewardController extends Controller
     {
         $reward->delete();
         return response()->json([
-            'message'=>'delete success'
+            'message' => 'delete success'
         ], 204);
     }
 
     public function category(Reward $reward)
     {
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $reward->category
         ], 200);
     }
@@ -80,7 +79,7 @@ class RewardController extends Controller
 //        $partner = Partner::where('custom_id',$id)->first();
 
         return response()->json([
-            'status' => 'success',
+            'message' => 'success',
             'data' => $reward->partner
         ], 200);
     }
