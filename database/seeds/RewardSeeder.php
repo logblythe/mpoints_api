@@ -26,7 +26,7 @@ class RewardSeeder extends Seeder
                 'details_html' => $faker->randomHtml(),
                 'image' => $faker->imageUrl(),
                 'category_id' => $i,
-                'mp_cost' => $faker->randomNumber(5),
+                'mp_cost' => $faker->randomNumber(2),
                 'active_inactive' => $faker->boolean
             ]);
             $tags = Tag::skip(rand(0, 5))->take(rand(6, 10))->get();

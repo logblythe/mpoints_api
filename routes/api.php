@@ -143,6 +143,12 @@ Route::group(['middleware' => ['auth:api', 'check_role']], function () {
         ]);
     });
 
+    Route::prefix('sellers')->group(function () {
+        Route::get('/', [
+            'uses' => 'SellerController@show',
+            'roles' => ['Admin', 'Seller', 'User']
+        ]);
+    });
 });
 // will work only when user has verified the email
 

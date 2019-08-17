@@ -37,7 +37,11 @@ class StatementController extends Controller
     {
         $statement = Statement::create($request->all());
         $user = Auth::user();
-        $user->mp_amount = $user->mp_amount - $request['mp_amount'];
+        if ($statement->transaction_type == '1') {
+            $user->mp_amount = $user->mp_amount + $request['mp_amount'];
+        } else {
+            $user->mp_amount = $user->mp_amount - $request['mp_amount'];
+        }
         $user->save();
         return response()->json([
             'message' => 'success',

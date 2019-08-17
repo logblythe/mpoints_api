@@ -16,11 +16,12 @@ class CreateSellersTable extends Migration
         Schema::create('sellers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('custom_id');
+            $table->string('partner_id');
             $table->string('brn');
+            $table->string('main_store')->nullable();
             $table->string('seller_name');
             $table->string('phone');
             $table->string('email');
-            $table->boolean('validated');
             $table->boolean('active_inactive');
             $table->timestamps();
         });
