@@ -52,17 +52,11 @@ class VerificationApiController extends Controller
     public function resend(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-
             return response()->json('User already have verified email!', 422);
-
 // return redirect($this->redirectPath());
-
         }
-
         $request->user()->sendEmailVerificationNotification();
-
         return response()->json('The notification has been resubmitted');
-
 // return back()->with('resent', true);
 
     }

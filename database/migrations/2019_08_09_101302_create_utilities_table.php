@@ -19,8 +19,8 @@ class CreateUtilitiesTable extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('facebook')->nullable();
-            $table->string('privacy_policy')->nullable();
-            $table->string('terms_conditions')->nullable();
+            $table->longText('privacy_policy')->nullable();
+            $table->longText('terms_conditions')->nullable();
             $table->timestamps();
         });
     }

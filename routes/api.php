@@ -25,6 +25,8 @@ Route::post('register/email', 'UsersApiController@uniqueEmail');
 
 Route::post('password/reset', 'UsersApiController@resetPassword');
 
+Route::get('utility', 'UsersApiController@utility');
+
 Route::group(['middleware' => ['auth:api', 'check_role']], function () {
 
     Route::get('details', ['uses' => 'UsersApiController@details',

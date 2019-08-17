@@ -4,15 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Mail\PasswordResetEmail;
 use App\Role;
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use App\Utility;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Validator;
 use Illuminate\Foundation\Auth\VerifiesEmails;
-use Illuminate\Auth\Events\Verified;
 
 
 class UsersApiController extends Controller
@@ -112,7 +110,7 @@ class UsersApiController extends Controller
         }
         $user->sendApiEmailVerificationNotification();
         $success['message'] = 'Please confirm yourself by clicking on verify user button sent to you on your email';
-        return response()->json([$success], $this->successStatus);
+        return response()->json($success, $this->successStatus);
     }
 
     public function details()
@@ -158,6 +156,14 @@ class UsersApiController extends Controller
             $random_string .= $random_character;
         }
         return $random_string;
+    }
+
+    function utility()
+    {
+        return response()->json([
+            'message' => 'success',
+            'data' => Utility::take(1)->get()
+        ], 200);
     }
 
 
