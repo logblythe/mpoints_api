@@ -32,6 +32,9 @@ Route::group(['middleware' => ['auth:api', 'check_role']], function () {
     Route::get('details', ['uses' => 'UsersApiController@details',
         'roles' => ['Admin', 'Seller', 'User']]);
 
+    Route::post('updatePassword', ['uses' => 'UsersApiController@updatePassword',
+        'roles' => ['Admin', 'Seller', 'User']]);
+
     Route::post('setImage', 'UsersApiController@setImage');
 
     Route::get('ads', ['uses' => 'AdController@index',
@@ -154,7 +157,7 @@ Route::group(['middleware' => ['auth:api', 'check_role']], function () {
             'uses' => 'PartnerSellerController@show',
             'roles' => ['Admin', 'Seller', 'User']
         ]);
-       
+
     });
 
     Route::prefix('employees')->group(function () {

@@ -8,6 +8,7 @@ use App\Utility;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Validator;
 use Illuminate\Foundation\Auth\VerifiesEmails;
@@ -142,6 +143,38 @@ class UsersApiController extends Controller
             return response()->json([
                 'message' => 'Password reset failure',
                 'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required',
+            'c_new_password' => 'required | same:new_password',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Registration fail',
+                'error' => $validator->errors()->first()], 401);
+        }
+
+        $oldPassword = $request['old_password'];
+        $newPassword = $request['new_password'];
+
+        $user = Auth::user();
+        if (Hash::check($oldPassword, $user->password)) {
+            $user->password = bcrypt($newPassword);
+            $user->save();
+            return response()->json([
+                'message' => 'Password reset success',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Password reset failure',
+                'error' => 'Password don\'t match',
             ]);
         }
     }
