@@ -19,6 +19,10 @@ class Statement extends Model
         'reward_id'
     ];
 
+    protected $hidden = [
+        'id', 'created_at', 'updated_at'
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');

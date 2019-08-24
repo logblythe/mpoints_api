@@ -6,22 +6,23 @@ use App\Partner;
 use App\Statement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class StatementController extends Controller
 {
     public function index()
     {
-//        $transactions = Statement::orderBy('id', 'desc')->paginate(5);
-        $desiredSize = Input::get('size');
-        if ($desiredSize) {
-            $transactions = Statement::take($desiredSize)->get();
-        } else {
-            $transactions = Statement::all();
-        }
+        $statements = DB::table('statements')
+            ->join('partners', 'statements.partner_id', '=', 'partners.custom_id')
+            ->leftJoin('rewards', 'statements.reward_id', '=', 'rewards.custom_id')
+            ->select('statements.*', 'partners.business_name', 'partners.image', 'rewards.reward_name')
+            ->orderBy('statements.id', 'desc')
+            ->paginate(10);
+
         return response()->json([
             'message' => 'success',
-            'data' => $transactions
+            'data' => $statements
         ], 200);
     }
 
@@ -35,6 +36,7 @@ class StatementController extends Controller
 
     public function store(Request $request)
     {
+
         $statement = Statement::create($request->all());
         $user = Auth::user();
         if ($statement->transaction_type == '1') {

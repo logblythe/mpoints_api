@@ -12,6 +12,7 @@ class AdController extends Controller
     {
         $ads = Ad::where('start_date', '<=', Carbon::now())
             ->where('end_date', '>=', Carbon::now())
+            ->where('active_inactive', true)
             ->get();
         return response()->json([
             'message' => 'Ads fetch success',

@@ -7,27 +7,28 @@ use App\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
-class SellerController extends Controller
+class PartnerSellerController extends Controller
 {
-    public function show()
-    {
+    public function index(){
         return response()->json([
             'message' => 'success',
-            'data' => Seller::all()
+            'data' => PartnerSeller::all()
         ], 200);
+    }
+    public function show()
+    {
         $customId = Input::get('customId');
         if (!$customId) {
-            $seller = Seller::all();
+            $seller = PartnerSeller::all();
             return response()->json([
                 'message' => 'success',
                 'data' => $seller
             ], 200);
         }
-        $seller = Seller::where('custom_id', $customId)->first();
+        $seller = PartnerSeller::with('partner')->where('custom_id', $customId)->first();
         if (!$seller) {
             return response()->json([
                 'error' => 'No seller found',
-                'data' => $seller
             ], 200);
         }
 //        if ($seller->partner->active_inactive == false) {
@@ -38,7 +39,7 @@ class SellerController extends Controller
 //        }
         return response()->json([
             'message' => 'success',
-            'data' => [$seller]
+            'data' => $seller
         ], 200);
     }
 }

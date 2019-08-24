@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Seller extends Model
+class PartnerSeller extends Model
 {
     protected $fillable = [
         'custom_id',
+        'partner_id',
         'brn',
         'main_store',
         'seller_name',
@@ -20,9 +21,9 @@ class Seller extends Model
         'created_at', 'updated_at'
     ];
 
-    public function partners()
+    public function partner()
     {
-        return $this->belongsToMany('App\Partner');
+        return $this->belongsTo('App\Partner', 'partner_id', 'custom_id');
     }
 
     public function employees()

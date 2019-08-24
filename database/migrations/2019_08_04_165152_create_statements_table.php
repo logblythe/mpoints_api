@@ -24,7 +24,7 @@ class CreateStatementsTable extends Migration
             $table->integer('count_of_items')->nullable();
             $table->integer('mp_amount')->nullable();
             $table->integer('sp_amount')->nullable();
-            $table->string('reward_id');
+            $table->string('reward_id')->nullable();
             $table->timestamps();
         });
     }

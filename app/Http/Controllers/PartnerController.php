@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Partner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use phpseclib\Crypt\Random;
 
@@ -21,10 +22,13 @@ class PartnerController extends Controller
     {
         $desiredSize = Input::get('size');
         if (!$desiredSize) {
-            $partners = Partner::orderBy('id', 'desc')->paginate(5);
+            $partners = DB::table('partners')
+                ->join('categories', 'partners.category_id', '=', 'categories.id')
+                ->where('partners.active_inactive','=',true)
+                ->select('partners.*', 'categories.category_name')
+                ->paginate(5);
         } else {
-//            $partners = Partner::all();
-            $partners = Partner::take($desiredSize)->get();
+            $partners = Partner::where('active_inactive', true)->take($desiredSize)->get();
         }
         return response()->json([
             'message' => 'success',

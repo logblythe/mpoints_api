@@ -30,7 +30,6 @@ class Partner extends Model
         return $this->hasOne('App\Category', 'id', 'category_id');
     }
 
-
     public function tags()
     {
         return $this->belongsToMany('App\Tag');
@@ -39,5 +38,15 @@ class Partner extends Model
     public function rewards()
     {
         return $this->hasMany('App\Reward', 'partner_id', 'custom_id');
+    }
+
+    public function sellers()
+    {
+        return $this->belongsToMany('App\Seller');
+    }
+
+    public function partnerSeller()
+    {
+        return $this->hasOne('App\PartnerSeller', 'partner_id', 'custom_id');
     }
 }
