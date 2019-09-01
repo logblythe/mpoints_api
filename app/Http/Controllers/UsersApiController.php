@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\PasswordResetEmail;
+use App\Notifications\PasswordResetNotification;
 use App\Role;
 use App\Utility;
 use Illuminate\Http\Request;
@@ -134,8 +135,8 @@ class UsersApiController extends Controller
         $newPassword = $this->generate_string($this->permitted_chars, 20);
         $user->password = bcrypt($newPassword);
         try {
-            Mail::to($user->email)->send(new PasswordResetEmail($user, $newPassword));
             $user->save();
+            $user->notify(new PasswordResetNotification($newPassword));
             return response()->json([
                 'message' => 'Password reset success. Please check your email',
             ]);

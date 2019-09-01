@@ -13,11 +13,14 @@ class StatementController extends Controller
 {
     public function index()
     {
+        $userId = Input::get('userId');
+        $sellerId = Input::get('sellerId');
         $statements = DB::table('statements')
             ->join('partners', 'statements.partner_id', '=', 'partners.custom_id')
             ->leftJoin('rewards', 'statements.reward_id', '=', 'rewards.custom_id')
             ->select('statements.*', 'partners.business_name', 'partners.image', 'rewards.reward_name')
             ->orderBy('statements.id', 'desc')
+            ->where('statements.user_id',$userId)
             ->paginate(10);
 
         return response()->json([

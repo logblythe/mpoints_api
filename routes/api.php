@@ -109,7 +109,7 @@ Route::group(['middleware' => ['auth:api', 'check_role']], function () {
 
     Route::prefix('statements')->group(function () {
         Route::get('/', [
-            'uses' => 'StatementController@index',
+                'uses' => 'StatementController@index',
             'roles' => ['Admin', 'Seller', 'User'],
         ]);
         Route::get('/{statement}', [

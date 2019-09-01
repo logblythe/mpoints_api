@@ -39,7 +39,8 @@ class VerificationApiController extends Controller
 
         $user->save();
 
-        return response()->json('Email verified!');
+//        return response()->json('Email verified!');
+        return view('email_verified');
 
     }
 

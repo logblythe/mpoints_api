@@ -31,10 +31,16 @@ class PartnerSellerController extends Controller
                 'error' => 'No seller found',
             ], 200);
         }
+        if ($seller->active_inactive == false) {
+            return response()->json([
+                'error' => 'the seller is not active',
+                'data' => $seller
+            ], 200);
+        }
         if ($seller->partner->active_inactive == false) {
             return response()->json([
                 'error' => 'the partner is not active',
-                'data' => [$seller]
+                'data' => $seller
             ], 200);
         }
         return response()->json([

@@ -1,7 +1,8 @@
 <tr>
     <td class="header">
         <a href="{{ $url }}">
-            {{ $slot }}
+{{--            hello world {{  $slot }}--}}
+            MoPoints Rewards
         </a>
     </td>
 </tr>
