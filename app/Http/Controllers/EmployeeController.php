@@ -22,15 +22,21 @@ class EmployeeController extends Controller
                 }
                 $partnerSeller = PartnerSeller::where('custom_id', $employee->seller_id)->first();
                 if ($partnerSeller) {
-                    if ($partnerSeller->custom_id == $sellerId) {
+                    if (!$sellerId) {
                         return response()->json([
                             'message' => 'success',
                             'data' => $employee
                         ], 200);
+                    } else if ($partnerSeller->custom_id == $sellerId) {
+                        return response()->json([
+                            'message' => 'success',
+                            'data' => $employee
+                        ], 200);
+                    } else {
+                        return response()->json([
+                            'error' => 'Invalid employee',
+                        ], 200);
                     }
-                    return response()->json([
-                        'error' => 'Invalid employee',
-                    ], 200);
                 } else {
                     return response()->json([
                         'error' => 'Not associated with partner seller',

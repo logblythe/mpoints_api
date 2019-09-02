@@ -39,11 +39,11 @@ class StatementController extends Controller
 
     public function store(Request $request)
     {
-
         $statement = Statement::create($request->all());
         $user = Auth::user();
         if ($statement->transaction_type == '1') {
             $user->mp_amount = $user->mp_amount + $request['mp_amount'];
+            $user->sp_amount = $user->sp_amount + $request['sp_amount'];
         } else {
             $user->mp_amount = $user->mp_amount - $request['mp_amount'];
         }
